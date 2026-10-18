@@ -1,0 +1,28 @@
+# Demo TocinLang-inspired RTOS program for the host simulator.
+channel telemetry capacity 2;
+
+task producer priority 3 {
+  print "producer start";
+  send telemetry "sensor:42";
+  yield;
+  send telemetry "sensor:43";
+  sleep 2;
+  print "producer done";
+}
+
+task consumer priority 2 {
+  print "consumer start";
+  recv telemetry as first;
+  print first;
+  recv telemetry as second;
+  print second;
+  print "consumer done";
+}
+
+task background priority 1 {
+  print "background tick";
+  yield;
+  print "background done";
+}
+
+run producer, consumer, background;
